@@ -8,10 +8,27 @@ const { Header, Content, Footer, Sider } = Layout;
 const SubMenu = Menu.SubMenu;
 
 const BasicLayout: React.FC = props => {
+  console.log('路由', props);
   const [collapsed, toggleCollapsed] = useState(false);
 
   const toggle = () => {
     toggleCollapsed(!collapsed);
+  };
+  const renderMenu = data => {
+    return data.map(item => {
+      if (item.children) {
+        return (
+          <SubMenu key={item.key} title={item.title}>
+            {renderMenu(item.children)}
+          </SubMenu>
+        );
+      }
+      return (
+        <Menu.Item key={item.key} title={item.title}>
+          {item.title}
+        </Menu.Item>
+      );
+    });
   };
   return (
     <Layout>

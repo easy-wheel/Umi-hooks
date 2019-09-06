@@ -37,7 +37,9 @@ const UserModel: UserModelType = {
       console.log('response', response);
       yield put({
         type: 'update',
-        payload: response,
+        payload: {
+          userList: response
+        },
       });
     },
   },
@@ -45,7 +47,7 @@ const UserModel: UserModelType = {
     update(state, { payload }) {
       return {
         ...state,
-        userList: payload,
+        ...payload,
       };
     },
   },
