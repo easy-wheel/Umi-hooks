@@ -4,7 +4,7 @@
  * @Author: fengshuan
  * @Date: 2019-09-07 10:33:22
  * @LastEditors: fengshuan
- * @LastEditTime: 2019-09-07 15:10:59
+ * @LastEditTime: 2019-09-07 16:51:51
  */
 import { IConfig } from 'umi-types';
 
@@ -54,12 +54,12 @@ const config: IConfig = {
         {
           path: '/form',
           name: '表单',
-          icon: 'shop',
+          icon: 'form',
           routes: [
             {
               name: '基础表单',
               path: '/form/basicForm',
-              icon: 'shop',
+              icon: 'form',
               component: './form/basicForm',
             },
           ],

@@ -3,9 +3,7 @@ import { Layout, Menu, Breadcrumb, Icon } from 'antd';
 import Link from 'umi/link';
 import logo from './../assets/logo.svg';
 import styles from './index.less';
-// import { router } from 'dva';
 import router from 'umi/router';
-import { routerRedux } from 'dva/router';
 
 const { Header, Content, Footer, Sider } = Layout;
 const SubMenu = Menu.SubMenu;

@@ -1,5 +1,5 @@
 import React, { useState, useEffect, Fragment } from 'react';
-import { Table } from 'antd';
+import { Table, Card } from 'antd';
 import { connect } from 'dva';
 import { ColumnProps } from 'antd/lib/table';
 import { ConnectState } from '@/models/connect';
@@ -38,9 +38,9 @@ const User: React.FC = props => {
     },
   ];
   return (
-    <Fragment>
+    <Card bordered={false}>
       <Table columns={columns} dataSource={userList} />
-    </Fragment>
+    </Card>
   );
 };
 

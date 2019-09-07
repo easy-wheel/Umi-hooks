@@ -4,7 +4,7 @@
  * @Author: fengshuan
  * @Date: 2019-09-07 11:12:26
  * @LastEditors: fengshuan
- * @LastEditTime: 2019-09-07 14:00:50
+ * @LastEditTime: 2019-09-07 16:43:58
  */
 import { AnyAction } from 'redux';
 import { EffectsCommandMap } from 'dva';
@@ -31,6 +31,7 @@ const FormModel: ModelType = {
     *submitBasicForm({ payload }, { call }) {
       const res = yield call(submitBasicForm, payload);
       console.log('基础表单提交结果', res);
+      message.success('提交成功');
     },
   },
 };
