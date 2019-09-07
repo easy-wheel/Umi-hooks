@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@ant-design/pro-layout": "^4.5.14",
+    "@uform/antd": "^0.4.0",
     "antd": "^3.19.5",
     "dva": "^2.6.0-beta.6",
     "react": "^16.8.6",

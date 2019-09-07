@@ -6,23 +6,34 @@
  * @LastEditors: fengshuan
  * @LastEditTime: 2019-09-07 13:32:22
  */
-import { Reducer } from 'redux';
-import { Effect } from 'dva';
-
+import { AnyAction, Reducer } from 'redux';
+import { EffectsCommandMap } from 'dva';
+import { message } from 'antd';
+import { routerRedux } from 'dva/router';
 import { queryList } from '@/services/user';
 
-export interface UserModelState {
-  userList?: Array<Object>;
+export type Effect = (
+  action: AnyAction,
+  effects: EffectsCommandMap & { select: <T>(func: (state: {}) => T) => T },
+) => void;
+
+export interface paginationProps {
+  pageNum: number;
+  total: number;
+}
+export interface UserStateProps {
+  userList: Array<Object>;
+  pagination: paginationProps;
 }
 
 export interface UserModelType {
   namespace: string;
-  state: UserModelState;
+  state: UserStateProps;
   effects: {
     getUserList: Effect;
   };
   reducers: {
-    updateState: Reducer<UserModelState>;
+    updateState: Reducer<{}>;
   };
 }
 
@@ -30,6 +41,10 @@ const UserModel: UserModelType = {
   namespace: 'user',
   state: {
     userList: [],
+    pagination: {
+      pageNum: 1,
+      total: 0,
+    },
   },
   effects: {
     *getUserList({ payload }, { call, put }) {

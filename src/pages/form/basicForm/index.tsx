@@ -137,7 +137,7 @@ class BasicForm extends Component<BasicFormProps> {
     };
 
     return (
-      <Card bordered={false}>
+      <Card title="基础表单" bordered={false}>
         <Form {...formItemLayout} onSubmit={this.handleSubmit}>
           <FormItem label="普通文本">Jack-cool</FormItem>
           <FormItem label="选择器(Select)" hasFeedback>

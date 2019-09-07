@@ -8,6 +8,12 @@
  */
 import request from '@/utils/request';
 
+export interface UserProps {
+  id: number;
+  name: string;
+  subtitle: string;
+  price: number;
+}
 export async function queryList(): Promise<any> {
   return request('/api/users');
 }
