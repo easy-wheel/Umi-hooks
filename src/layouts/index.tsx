@@ -3,6 +3,9 @@ import { Layout, Menu, Breadcrumb, Icon } from 'antd';
 import Link from 'umi/link';
 import logo from './../assets/logo.svg';
 import styles from './index.less';
+// import { router } from 'dva';
+import router from 'umi/router';
+import { routerRedux } from 'dva/router';
 
 const { Header, Content, Footer, Sider } = Layout;
 const SubMenu = Menu.SubMenu;
@@ -14,21 +17,27 @@ const BasicLayout: React.FC = props => {
   const toggle = () => {
     toggleCollapsed(!collapsed);
   };
-  const renderMenu = data => {
+  const renderMenu = (data: Array<any>) => {
     return data.map(item => {
-      if (item.children) {
+      if (item.routes) {
         return (
-          <SubMenu key={item.key} title={item.title}>
-            {renderMenu(item.children)}
+          <SubMenu key={item.path} title={item.name}>
+            {renderMenu(item.routes)}
           </SubMenu>
         );
       }
       return (
-        <Menu.Item key={item.key} title={item.title}>
-          {item.title}
+        <Menu.Item key={item.path} title={item.name} onClick={handelMenuClick}>
+          {/* <Link to={item.path}> */}
+          <Icon type={item.icon} />
+          <span>{item.name}</span>
+          {/* </Link> */}
         </Menu.Item>
       );
     });
+  };
+  const handelMenuClick = e => {
+    router.push(e.key);
   };
   return (
     <Layout>
@@ -40,25 +49,7 @@ const BasicLayout: React.FC = props => {
           </Link>
         </div>
         <Menu theme="dark" defaultSelectedKeys={['1']} mode="inline">
-          <Menu.Item key="users">
-            <Link to="/user">
-              <Icon type="user" />
-              <span>Users</span>
-            </Link>
-          </Menu.Item>
-
-          <SubMenu
-            key="sub2"
-            title={
-              <span>
-                <Icon type="team" />
-                <span>Team</span>
-              </span>
-            }
-          >
-            <Menu.Item key="6">Team 1</Menu.Item>
-            <Menu.Item key="8">Team 2</Menu.Item>
-          </SubMenu>
+          {renderMenu(props.route.routes)}
         </Menu>
       </Sider>
       <Layout>
@@ -73,7 +64,7 @@ const BasicLayout: React.FC = props => {
           {/*此处可加面包屑*/}
           {props.children}
         </Content>
-        <Footer style={{ textAlign: 'center' }}>Ant Design ©2018 Created by Ant UED</Footer>
+        <Footer style={{ textAlign: 'center' }}>Ant Design ©2019 Created by Ant UED</Footer>
       </Layout>
     </Layout>
     // <div className={styles.normal}>

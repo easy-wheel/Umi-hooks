@@ -4,7 +4,7 @@
  * @Author: fengshuan
  * @Date: 2019-09-04 18:04:22
  * @LastEditors: fengshuan
- * @LastEditTime: 2019-09-05 12:29:19
+ * @LastEditTime: 2019-09-07 13:32:22
  */
 import { Reducer } from 'redux';
 import { Effect } from 'dva';
@@ -22,7 +22,7 @@ export interface UserModelType {
     getUserList: Effect;
   };
   reducers: {
-    update: Reducer<UserModelState>;
+    updateState: Reducer<UserModelState>;
   };
 }
 
@@ -33,18 +33,18 @@ const UserModel: UserModelType = {
   },
   effects: {
     *getUserList({ payload }, { call, put }) {
-      const response = yield call(queryList);
+      const response = yield call(queryList, payload);
       console.log('response', response);
       yield put({
-        type: 'update',
+        type: 'updateState',
         payload: {
-          userList: response
+          userList: response,
         },
       });
     },
   },
   reducers: {
-    update(state, { payload }) {
+    updateState(state, { payload }) {
       return {
         ...state,
         ...payload,
