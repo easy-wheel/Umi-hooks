@@ -40,6 +40,7 @@ const UserList = (props: TableListProps) => {
   };
   const handleStandardTableChange = (pagination: any) => {
     // TODO: 表格筛选项发生改变，重新请求接口
+    console.log('表格筛选项发生改变，重新请求接口');
   };
   const submit = (values: any) => {
     const data = {
