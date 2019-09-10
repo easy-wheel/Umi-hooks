@@ -20,7 +20,7 @@ class StandardTable extends PureComponent {
     return null;
   }
 
-  handleRowSelectChange = (selectedRowKeys, selectedRows) => {
+  handleRowSelectChange = (selectedRowKeys: string[] | number[], selectedRows: Array<any>) => {
     const { onSelectRow } = this.props;
     if (onSelectRow) {
       onSelectRow(selectedRows);
@@ -44,12 +44,13 @@ class StandardTable extends PureComponent {
 
   render() {
     const { selectedRowKeys } = this.state;
-    const { data = {}, rowKey, ...rest } = this.props;
-    const { list = [], pagination } = data;
+    const { data = {}, paginations, rowKey, ...rest } = this.props;
+    // const { list = [], pagination } = data;
 
     const paginationProps = {
       showQuickJumper: true,
-      ...pagination,
+      showSizeChanger: true,
+      ...paginations,
     };
 
     const rowSelection = {
@@ -79,7 +80,7 @@ class StandardTable extends PureComponent {
         <Table
           rowKey={rowKey || 'key'}
           rowSelection={rowSelection}
-          dataSource={list}
+          dataSource={data}
           pagination={paginationProps}
           onChange={this.handleTableChange}
           {...rest}

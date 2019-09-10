@@ -19,6 +19,7 @@ export type Effect = (
 
 export interface paginationProps {
   pageNum: number;
+  pageSize: number;
   total: number;
 }
 export interface UserStateProps {
@@ -43,17 +44,21 @@ const UserModel: UserModelType = {
     userList: [],
     pagination: {
       pageNum: 1,
+      pageSize: 20,
       total: 0,
     },
   },
   effects: {
     *getUserList({ payload }, { call, put }) {
       const response = yield call(queryList, payload);
-      console.log('response', response);
+      let { list = [], pagination = {} } = response.data;
+
+      console.log('payload', payload);
       yield put({
         type: 'updateState',
         payload: {
-          userList: response,
+          userList: list,
+          pagination,
         },
       });
     },

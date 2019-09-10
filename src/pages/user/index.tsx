@@ -33,16 +33,48 @@ const UserList = (props: TableListProps) => {
   const [selectedRows, setRows] = useState([]);
   const [searchValue, setSearchValue] = useState<SearchFormProps>({});
 
-  const { dispatch, user, loading } = props;
+  const {
+    dispatch,
+    user: { userList, pagination },
+    loading,
+  } = props;
 
+  useEffect(() => {
+    fetchList();
+  }, [searchValue]);
+
+  const fetchList = useCallback(() => {
+    const { pagination } = props.user;
+    dispatch({
+      type: 'user/getUserList',
+      payload: {
+        ...searchValue,
+        pageNum: pagination.pageNum,
+        pageSize: pagination.pageSize,
+      },
+    });
+  }, [props.user.pagination, searchValue]);
   const handleSelectRows = (rows: any) => {
     setRows(rows);
   };
-  const handleStandardTableChange = (pagination: any) => {
+  const handleStandardTableChange = async (pagination: any) => {
     // TODO: 表格筛选项发生改变，重新请求接口
-    console.log('表格筛选项发生改变，重新请求接口');
+    console.log('表格筛选项发生改变，重新请求接口', pagination);
+    const { pageNum, pageSize, total } = pagination;
+    await dispatch({
+      type: 'user/updateState',
+      payload: {
+        pagination: {
+          pageNum,
+          pageSize,
+          total,
+        },
+      },
+    });
+    fetchList();
   };
   const submit = (values: any) => {
+    console.log('搜索val', values);
     const data = {
       ...values,
       pageNum: 1,
@@ -114,7 +146,7 @@ const UserList = (props: TableListProps) => {
   };
 
   return (
-    <PageHeaderWrapper>
+    <Fragment>
       <Row style={{ marginBottom: 15 }} type="flex" justify="space-between">
         <Col>
           <SearchForm handleSubmit={submit} />
@@ -127,7 +159,8 @@ const UserList = (props: TableListProps) => {
       </Row>
 
       <StandardTable
-        data={user}
+        data={userList}
+        paginations={pagination}
         rowKey="id"
         selectedRows={selectedRows}
         onSelectRow={handleSelectRows}
@@ -135,7 +168,7 @@ const UserList = (props: TableListProps) => {
         loading={!!loading}
         onChange={handleStandardTableChange}
       />
-    </PageHeaderWrapper>
+    </Fragment>
   );
 };
 

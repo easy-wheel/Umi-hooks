@@ -57,26 +57,47 @@ export default {
     phone: '0752-268888888',
   },
   // GET POST 可省略
-  'GET /api/users': [
-    {
-      key: '1',
-      name: 'John Brown',
-      age: 32,
-      address: 'New York No. 1 Lake Park',
+  'GET /api/users': {
+    data: {
+      list: [
+        {
+          key: '1',
+          id: 1,
+          subtitle: '产品',
+          price: 1000,
+          status: 'audit',
+          name: 'John Brown',
+          age: 32,
+          address: 'New York No. 1 Lake Park',
+        },
+        {
+          key: '2',
+          id: 2,
+          subtitle: '前端',
+          price: 3000,
+          status: 'wait',
+          name: 'Jim Green',
+          age: 42,
+          address: 'London No. 1 Lake Park',
+        },
+        {
+          key: '3',
+          id: 3,
+          subtitle: '服务端',
+          price: 300,
+          status: 'pass',
+          name: 'Joe Black',
+          age: 32,
+          address: 'Sidney No. 1 Lake Park',
+        },
+      ],
+      pagination: {
+        total: 3,
+        pageSize: 20,
+        pageNum: 1,
+      },
     },
-    {
-      key: '2',
-      name: 'Jim Green',
-      age: 42,
-      address: 'London No. 1 Lake Park',
-    },
-    {
-      key: '3',
-      name: 'Joe Black',
-      age: 32,
-      address: 'Sidney No. 1 Lake Park',
-    },
-  ],
+  },
   'POST /api/login/account': (req: Request, res: Response) => {
     const { password, userName, type } = req.body;
     if (password === 'ant.design' && userName === 'admin') {
