@@ -16,7 +16,7 @@ export type Effect = (
   effects: EffectsCommandMap & { select: <T>(func: (state: {}) => T) => T },
 ) => void;
 
-export interface ModelType {
+export interface BasicFormModelType {
   namespace: string;
   state: {};
   effects: {
@@ -24,7 +24,7 @@ export interface ModelType {
   };
 }
 
-const FormModel: ModelType = {
+const FormModel: BasicFormModelType = {
   namespace: 'form',
   state: {},
   effects: {

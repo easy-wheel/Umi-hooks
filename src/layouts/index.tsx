@@ -18,13 +18,13 @@ const BasicLayout: React.FC = props => {
     return data.map((item, index) => {
       if (item.routes) {
         return (
-          <SubMenu key={index} title={item.name}>
+          <SubMenu key={item.path} title={item.name}>
             {renderMenu(item.routes)}
           </SubMenu>
         );
       }
       return (
-        <Menu.Item key={index} title={item.name} onClick={handelMenuClick}>
+        <Menu.Item key={item.path} title={item.name} onClick={handelMenuClick}>
           {/* <Link to={item.path}> */}
           <Icon type={item.icon} />
           <span>{item.name}</span>

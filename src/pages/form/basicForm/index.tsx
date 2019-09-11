@@ -1,11 +1,3 @@
-/*
- * @Description:
- * @version:
- * @Author: fengshuan
- * @Date: 2019-09-07 10:56:50
- * @LastEditors: fengshuan
- * @LastEditTime: 2019-09-07 14:35:36
- */
 import {
   Button,
   Card,
