@@ -9,7 +9,6 @@ const { Header, Content, Footer, Sider } = Layout;
 const SubMenu = Menu.SubMenu;
 
 const BasicLayout: React.FC = props => {
-  console.log('路由', props);
   const [collapsed, toggleCollapsed] = useState(false);
 
   const toggle = () => {
