@@ -15,16 +15,16 @@ const BasicLayout: React.FC = props => {
     toggleCollapsed(!collapsed);
   };
   const renderMenu = (data: Array<any>) => {
-    return data.map(item => {
+    return data.map((item, index) => {
       if (item.routes) {
         return (
-          <SubMenu key={item.path} title={item.name}>
+          <SubMenu key={index} title={item.name}>
             {renderMenu(item.routes)}
           </SubMenu>
         );
       }
       return (
-        <Menu.Item key={item.path} title={item.name} onClick={handelMenuClick}>
+        <Menu.Item key={index} title={item.name} onClick={handelMenuClick}>
           {/* <Link to={item.path}> */}
           <Icon type={item.icon} />
           <span>{item.name}</span>

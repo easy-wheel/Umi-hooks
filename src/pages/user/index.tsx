@@ -47,6 +47,9 @@ interface UserListProps extends FormComponentProps {
 
 interface UserListState {
   selectedRows: TableListItem[];
+  formValues: {
+    [key: string]: string;
+  };
 }
 /* eslint react/no-multi-comp:0 */
 @connect(
@@ -68,6 +71,7 @@ interface UserListState {
 class UserList extends Component<UserListProps, UserListState> {
   state: UserListState = {
     selectedRows: [],
+    formValues: {},
   };
 
   columns: StandardTableColumnProps[] = [
@@ -158,10 +162,11 @@ class UserList extends Component<UserListProps, UserListState> {
     }, {});
     console.log('filters', filters);
     const { dispatch } = this.props;
-
+    const { formValues } = this.state;
     const params: Partial<TableListParams> = {
       currentPage: pagination.current,
       pageSize: pagination.pageSize,
+      ...formValues,
       ...filters,
     };
     if (sorter.field) {
@@ -174,6 +179,77 @@ class UserList extends Component<UserListProps, UserListState> {
     });
   };
 
+  handleSearch = (e: React.FormEvent) => {
+    e.preventDefault();
+
+    const { dispatch, form } = this.props;
+
+    form.validateFields((err, fieldsValue) => {
+      if (err) return;
+
+      const values = {
+        ...fieldsValue,
+      };
+
+      this.setState({
+        formValues: values,
+      });
+
+      dispatch({
+        type: 'user/fetchUserList',
+        payload: values,
+      });
+    });
+  };
+
+  handleFormReset = () => {
+    const { form, dispatch } = this.props;
+    form.resetFields();
+    this.setState({
+      formValues: {},
+    });
+    dispatch({
+      type: 'user/fetchUserList',
+      payload: {},
+    });
+  };
+
+  renderSimpleForm() {
+    const { form } = this.props;
+    const { getFieldDecorator } = form;
+    return (
+      <Form onSubmit={this.handleSearch} layout="inline">
+        <Row gutter={{ md: 8, lg: 24, xl: 48 }}>
+          <Col md={8} sm={24}>
+            <FormItem label="规则名称">
+              {getFieldDecorator('name')(<Input placeholder="请输入" />)}
+            </FormItem>
+          </Col>
+          <Col md={8} sm={24}>
+            <FormItem label="使用状态">
+              {getFieldDecorator('status')(
+                <Select placeholder="请选择" style={{ width: '100%' }}>
+                  <Option value="0">关闭</Option>
+                  <Option value="1">运行中</Option>
+                </Select>,
+              )}
+            </FormItem>
+          </Col>
+          <Col md={8} sm={24}>
+            <span className={styles.submitButtons}>
+              <Button type="primary" htmlType="submit">
+                查询
+              </Button>
+              <Button style={{ marginLeft: 8 }} onClick={this.handleFormReset}>
+                重置
+              </Button>
+            </span>
+          </Col>
+        </Row>
+      </Form>
+    );
+  }
+
   render() {
     const {
       user: { data },
@@ -184,14 +260,17 @@ class UserList extends Component<UserListProps, UserListState> {
     return (
       <Fragment>
         <Card bordered={false}>
-          <StandardTable
-            selectedRows={selectedRows}
-            loading={loading}
-            data={data}
-            columns={this.columns}
-            onSelectRow={this.handleSelectRows}
-            onChange={this.handleTableChange}
-          />
+          <div className={styles.tableList}>
+            <div className={styles.tableListForm}>{this.renderSimpleForm()}</div>
+            <StandardTable
+              selectedRows={selectedRows}
+              loading={loading}
+              data={data}
+              columns={this.columns}
+              onSelectRow={this.handleSelectRows}
+              onChange={this.handleTableChange}
+            />
+          </div>
         </Card>
       </Fragment>
     );
