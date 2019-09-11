@@ -38,6 +38,7 @@ export interface UserModelType {
   state: UserStateType;
   effects: {
     fetchUserList: Effect;
+    removeUser: Effect;
   };
   reducers: {
     updateState: Reducer<UserStateType>;
@@ -61,6 +62,14 @@ const UserModel: UserModelType = {
         type: 'save',
         payload: response,
       });
+    },
+    *removeUser({ payload, callback }, { call, put }) {
+      const response = yield call(removeUser, payload);
+      yield put({
+        type: 'save',
+        payload: response,
+      });
+      if (callback) callback();
     },
   },
   reducers: {
