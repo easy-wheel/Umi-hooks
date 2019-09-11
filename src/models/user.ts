@@ -10,56 +10,56 @@ import { AnyAction, Reducer } from 'redux';
 import { EffectsCommandMap } from 'dva';
 import { message } from 'antd';
 import { routerRedux } from 'dva/router';
-import { queryList } from '@/services/user';
+import { queryUser, removeUser, addUser, updateUser } from '@/services/user';
+
+import { TableListData } from '@/types/user.d';
 
 export type Effect = (
   action: AnyAction,
   effects: EffectsCommandMap & { select: <T>(func: (state: {}) => T) => T },
 ) => void;
 
-export interface paginationProps {
-  pageNum: number;
-  pageSize: number;
-  total: number;
+export interface UserStateType {
+  data: TableListData;
 }
-export interface UserStateProps {
-  userList: Array<Object>;
-  pagination: paginationProps;
-}
+
+// export interface paginationProps {
+//   pageNum: number;
+//   pageSize: number;
+//   total: number;
+// }
+// export interface UserStateProps {
+//   userList: Array<Object>;
+//   pagination: paginationProps;
+// }
 
 export interface UserModelType {
   namespace: string;
-  state: UserStateProps;
+  state: UserStateType;
   effects: {
-    getUserList: Effect;
+    fetchUserList: Effect;
   };
   reducers: {
-    updateState: Reducer<{}>;
+    updateState: Reducer<UserStateType>;
+    save: Reducer<UserStateType>;
   };
 }
 
 const UserModel: UserModelType = {
   namespace: 'user',
   state: {
-    userList: [],
-    pagination: {
-      pageNum: 1,
-      pageSize: 20,
-      total: 0,
+    data: {
+      list: [],
+      pagination: {},
     },
   },
   effects: {
-    *getUserList({ payload }, { call, put }) {
-      const response = yield call(queryList, payload);
-      let { list = [], pagination = {} } = response.data;
+    *fetchUserList({ payload }, { call, put }) {
+      const response = yield call(queryUser, payload);
 
-      console.log('payload', payload);
       yield put({
-        type: 'updateState',
-        payload: {
-          userList: list,
-          pagination,
-        },
+        type: 'save',
+        payload: response,
       });
     },
   },
@@ -68,6 +68,12 @@ const UserModel: UserModelType = {
       return {
         ...state,
         ...payload,
+      };
+    },
+    save(state, { payload }) {
+      return {
+        ...state,
+        data: payload,
       };
     },
   },

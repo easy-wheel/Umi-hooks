@@ -1,166 +1,146 @@
 import { Request, Response } from 'express';
+import { parse } from 'url';
+import { TableListItem, TableListParams } from '@/types/user.d';
 
-function getFakeCaptcha(req: Request, res: Response) {
-  return res.json('captcha-xxx');
+// mock tableListDataSource
+let tableListDataSource: TableListItem[] = [];
+for (let i = 0; i < 8; i += 1) {
+  tableListDataSource.push({
+    key: i,
+    disabled: i % 6 === 0,
+    href: 'https://ant.design',
+    avatar: [
+      'https://gw.alipayobjects.com/zos/rmsportal/eeHMaZBwmTvLdIwMfBpg.png',
+      'https://gw.alipayobjects.com/zos/rmsportal/udxAbMEhpwthVVcjLXik.png',
+    ][i % 2],
+    name: `TradeCode ${i}`,
+    title: `一个任务名称 ${i}`,
+    owner: '之晨',
+    desc: '这是一段描述',
+    callNo: Math.floor(Math.random() * 1000),
+    status: Math.floor(Math.random() * 10) % 4,
+    updatedAt: new Date(`2017-07-${Math.floor(i / 2) + 1}`),
+    createdAt: new Date(`2017-07-${Math.floor(i / 2) + 1}`),
+    progress: Math.ceil(Math.random() * 100),
+  });
 }
-// 代码中会兼容本地 service mock 以及部署站点的静态数据
-export default {
-  // 支持值为 Object 和 Array
-  'GET /api/currentUser': {
-    name: 'Serati Ma',
-    avatar: 'https://gw.alipayobjects.com/zos/antfincdn/XAosXuNZyF/BiazfanxmamNRoxxVxka.png',
-    userid: '00000001',
-    email: 'antdesign@alipay.com',
-    signature: '海纳百川，有容乃大',
-    title: '交互专家',
-    group: '蚂蚁金服－某某某事业群－某某平台部－某某技术部－UED',
-    tags: [
-      {
-        key: '0',
-        label: '很有想法的',
-      },
-      {
-        key: '1',
-        label: '专注设计',
-      },
-      {
-        key: '2',
-        label: '辣~',
-      },
-      {
-        key: '3',
-        label: '大长腿',
-      },
-      {
-        key: '4',
-        label: '川妹子',
-      },
-      {
-        key: '5',
-        label: '海纳百川',
-      },
-    ],
-    notifyCount: 12,
-    unreadCount: 11,
-    country: 'China',
-    geographic: {
-      province: {
-        label: '浙江省',
-        key: '330000',
-      },
-      city: {
-        label: '杭州市',
-        key: '330100',
-      },
-    },
-    address: '西湖区工专路 77 号',
-    phone: '0752-268888888',
-  },
-  // GET POST 可省略
-  'GET /api/users': {
-    data: {
-      list: [
-        {
-          key: '1',
-          id: 1,
-          subtitle: '产品',
-          price: 1000,
-          status: 'audit',
-          name: 'John Brown',
-          age: 32,
-          address: 'New York No. 1 Lake Park',
-        },
-        {
-          key: '2',
-          id: 2,
-          subtitle: '前端',
-          price: 3000,
-          status: 'wait',
-          name: 'Jim Green',
-          age: 42,
-          address: 'London No. 1 Lake Park',
-        },
-        {
-          key: '3',
-          id: 3,
-          subtitle: '服务端',
-          price: 300,
-          status: 'pass',
-          name: 'Joe Black',
-          age: 32,
-          address: 'Sidney No. 1 Lake Park',
-        },
-      ],
-      pagination: {
-        total: 3,
-        pageSize: 20,
-        pageNum: 1,
-      },
-    },
-  },
-  'POST /api/login/account': (req: Request, res: Response) => {
-    const { password, userName, type } = req.body;
-    if (password === 'ant.design' && userName === 'admin') {
-      res.send({
-        status: 'ok',
-        type,
-        currentAuthority: 'admin',
-      });
-      return;
-    }
-    if (password === 'ant.design' && userName === 'user') {
-      res.send({
-        status: 'ok',
-        type,
-        currentAuthority: 'user',
-      });
-      return;
-    }
-    res.send({
-      status: 'error',
-      type,
-      currentAuthority: 'guest',
-    });
-  },
-  'POST /api/register': (req: Request, res: Response) => {
-    res.send({ status: 'ok', currentAuthority: 'user' });
-  },
-  'GET /api/500': (req: Request, res: Response) => {
-    res.status(500).send({
-      timestamp: 1513932555104,
-      status: 500,
-      error: 'error',
-      message: 'error',
-      path: '/base/category/list',
-    });
-  },
-  'GET /api/404': (req: Request, res: Response) => {
-    res.status(404).send({
-      timestamp: 1513932643431,
-      status: 404,
-      error: 'Not Found',
-      message: 'No message available',
-      path: '/base/category/list/2121212',
-    });
-  },
-  'GET /api/403': (req: Request, res: Response) => {
-    res.status(403).send({
-      timestamp: 1513932555104,
-      status: 403,
-      error: 'Unauthorized',
-      message: 'Unauthorized',
-      path: '/base/category/list',
-    });
-  },
-  'GET /api/401': (req: Request, res: Response) => {
-    res.status(401).send({
-      timestamp: 1513932555104,
-      status: 401,
-      error: 'Unauthorized',
-      message: 'Unauthorized',
-      path: '/base/category/list',
-    });
-  },
 
-  'GET  /api/login/captcha': getFakeCaptcha,
+function getUser(req: Request, res: Response, u: string) {
+  let url = u;
+  if (!url || Object.prototype.toString.call(url) !== '[object String]') {
+    // eslint-disable-next-line prefer-destructuring
+    url = req.url;
+  }
+
+  const params = (parse(url, true).query as unknown) as TableListParams;
+
+  let dataSource = tableListDataSource;
+
+  if (params.sorter) {
+    const s = params.sorter.split('_');
+    dataSource = dataSource.sort((prev, next) => {
+      if (s[1] === 'descend') {
+        return next[s[0]] - prev[s[0]];
+      }
+      return prev[s[0]] - next[s[0]];
+    });
+  }
+
+  if (params.status) {
+    const status = params.status.split(',');
+    let filterDataSource: TableListItem[] = [];
+    status.forEach((s: string) => {
+      filterDataSource = filterDataSource.concat(
+        dataSource.filter(item => {
+          if (parseInt(`${item.status}`, 10) === parseInt(s.split('')[0], 10)) {
+            return true;
+          }
+          return false;
+        }),
+      );
+    });
+    dataSource = filterDataSource;
+  }
+
+  if (params.name) {
+    dataSource = dataSource.filter(data => data.name.indexOf(params.name) > -1);
+  }
+
+  let pageSize = 10;
+  if (params.pageSize) {
+    pageSize = parseInt(`${params.pageSize}`, 0);
+  }
+
+  const result = {
+    list: dataSource,
+    pagination: {
+      total: dataSource.length,
+      pageSize,
+      current: parseInt(`${params.currentPage}`, 10) || 1,
+    },
+  };
+
+  return res.json(result);
+}
+
+function postUser(req: Request, res: Response, u: string, b: Request) {
+  let url = u;
+  if (!url || Object.prototype.toString.call(url) !== '[object String]') {
+    // eslint-disable-next-line prefer-destructuring
+    url = req.url;
+  }
+
+  const body = (b && b.body) || req.body;
+  const { method, name, desc, key } = body;
+
+  switch (method) {
+    /* eslint no-case-declarations:0 */
+    case 'delete':
+      tableListDataSource = tableListDataSource.filter(item => key.indexOf(item.key) === -1);
+      break;
+    case 'post':
+      const i = Math.ceil(Math.random() * 10000);
+      tableListDataSource.unshift({
+        key: i,
+        href: 'https://ant.design',
+        avatar: [
+          'https://gw.alipayobjects.com/zos/rmsportal/eeHMaZBwmTvLdIwMfBpg.png',
+          'https://gw.alipayobjects.com/zos/rmsportal/udxAbMEhpwthVVcjLXik.png',
+        ][i % 2],
+        name: `TradeCode ${i}`,
+        title: `一个任务名称 ${i}`,
+        owner: '之晨',
+        desc,
+        callNo: Math.floor(Math.random() * 1000),
+        status: Math.floor(Math.random() * 10) % 2,
+        updatedAt: new Date(),
+        createdAt: new Date(),
+        progress: Math.ceil(Math.random() * 100),
+      });
+      break;
+    case 'update':
+      tableListDataSource = tableListDataSource.map(item => {
+        if (item.key === key) {
+          return { ...item, desc, name };
+        }
+        return item;
+      });
+      break;
+    default:
+      break;
+  }
+
+  const result = {
+    list: tableListDataSource,
+    pagination: {
+      total: tableListDataSource.length,
+    },
+  };
+
+  return res.json(result);
+}
+
+export default {
+  'GET /api/user': getUser,
+  'POST /api/user': postUser,
 };
