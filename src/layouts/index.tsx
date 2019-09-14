@@ -15,6 +15,7 @@ const BasicLayout: React.FC = props => {
     toggleCollapsed(!collapsed);
   };
   const renderMenu = (data: Array<any>) => {
+    console.log('路由', data)
     return data.map((item, index) => {
       if (item.routes) {
         return (

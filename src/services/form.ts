@@ -1,11 +1,3 @@
-/*
- * @Description:
- * @version:
- * @Author: fengshuan
- * @Date: 2019-09-07 11:23:11
- * @LastEditors: fengshuan
- * @LastEditTime: 2019-09-07 14:41:53
- */
 import request from '@/utils/request';
 
 interface submitBasicParams {

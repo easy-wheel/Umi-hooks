@@ -1,11 +1,3 @@
-/*
- * @Description:
- * @version:
- * @Author: fengshuan
- * @Date: 2019-09-07 11:12:26
- * @LastEditors: fengshuan
- * @LastEditTime: 2019-09-07 16:43:58
- */
 import { AnyAction } from 'redux';
 import { EffectsCommandMap } from 'dva';
 import { submitBasicForm } from '@/services/form';

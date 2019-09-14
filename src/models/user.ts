@@ -1,11 +1,3 @@
-/*
- * @Description:
- * @version:
- * @Author: fengshuan
- * @Date: 2019-09-04 18:04:22
- * @LastEditors: fengshuan
- * @LastEditTime: 2019-09-07 13:32:22
- */
 import { AnyAction, Reducer } from 'redux';
 import { EffectsCommandMap } from 'dva';
 import { message } from 'antd';

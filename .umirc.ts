@@ -42,24 +42,27 @@ const config: IConfig = {
         {
           path: '/',
           name: '首页',
+          exact: true,
           icon: 'home',
           component: './index.tsx',
         },
         {
           path: '/user',
           name: '用户',
+          exact: true,
           icon: 'user',
           component: './user',
         },
         {
           path: '/form',
           name: '表单',
+          exact: false,
           icon: 'form',
           routes: [
             {
               name: '基础表单',
               path: '/form/basicForm',
-              icon: 'form',
+              exact: true,
               component: './form/basicForm',
             },
           ],
