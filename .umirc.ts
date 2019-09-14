@@ -73,6 +73,9 @@ const config: IConfig = {
             },
           ],
         },
+        {
+          component: '404',
+        },
       ],
     },
   ],
