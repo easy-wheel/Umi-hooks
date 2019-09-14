@@ -2,7 +2,7 @@ import { AnyAction, Reducer } from 'redux';
 import { EffectsCommandMap } from 'dva';
 import { submitStepForm } from '@/services/stepForm';
 
-export interface StateType {
+export interface StepFormStateType {
   current?: string;
   step?: {
     payAccount: string;
@@ -14,22 +14,22 @@ export interface StateType {
 
 export type Effect = (
   action: AnyAction,
-  effects: EffectsCommandMap & { select: <T>(func: (state: StateType) => T) => T },
+  effects: EffectsCommandMap & { select: <T>(func: (state: StepFormStateType) => T) => T },
 ) => void;
 
-export interface ModelType {
+export interface StepFormModelType {
   namespace: string;
-  state: StateType;
+  state: StepFormStateType;
   effects: {
     submitStepForm: Effect;
   };
   reducers: {
-    saveStepFormData: Reducer<StateType>;
-    saveCurrentStep: Reducer<StateType>;
+    saveStepFormData: Reducer<StepFormStateType>;
+    saveCurrentStep: Reducer<StepFormStateType>;
   };
 }
 
-const Model: ModelType = {
+const StepFormModel: StepFormModelType = {
   namespace: 'stepForm',
   state: {
     current: 'info',
@@ -66,7 +66,7 @@ const Model: ModelType = {
       return {
         ...state,
         step: {
-          ...(state as StateType).step,
+          ...(state as StepFormStateType).step,
           ...payload,
         },
       };
@@ -74,4 +74,4 @@ const Model: ModelType = {
   },
 };
 
-export default Model;
+export default StepFormModel;

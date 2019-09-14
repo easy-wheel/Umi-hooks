@@ -65,6 +65,12 @@ const config: IConfig = {
               exact: true,
               component: './form/basicForm',
             },
+            {
+              name: '分步表单',
+              path: '/form/stepForm',
+              exact: true,
+              component: './form/stepForm',
+            },
           ],
         },
       ],
