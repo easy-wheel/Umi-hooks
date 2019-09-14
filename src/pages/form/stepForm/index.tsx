@@ -4,6 +4,9 @@ import React, { Component } from 'react';
 import { connect } from 'dva';
 import { StepFormStateType } from '@/models/stepForm';
 import Step1 from './components/Step1';
+import Step2 from './components/Step2';
+import Step3 from './components/Step3';
+
 import styles from './index.less';
 const { Step } = Steps;
 
@@ -32,7 +35,11 @@ class StepForm extends Component<StepFormProps> {
   render() {
     const currentStep = this.getCurrentStep();
     let stepComponent;
-    if (currentStep === 0) {
+    if (currentStep === 1) {
+      stepComponent = <Step2 />;
+    } else if (currentStep === 2) {
+      stepComponent = <Step3 />;
+    } else {
       stepComponent = <Step1 />;
     }
     return (
