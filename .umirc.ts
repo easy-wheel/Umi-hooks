@@ -74,6 +74,13 @@ const config: IConfig = {
           ],
         },
         {
+          path: '/editor',
+          name: '编辑器',
+          exact: true,
+          icon: 'edit',
+          component: './editor',
+        },
+        {
           component: '404',
         },
       ],
