@@ -74,6 +74,13 @@ const config: IConfig = {
           ],
         },
         {
+          path: '/chart',
+          name: '图表',
+          exact: true,
+          icon: 'dot-chart',
+          component: './chart',
+        },
+        {
           path: '/editor',
           name: '编辑器',
           exact: true,
