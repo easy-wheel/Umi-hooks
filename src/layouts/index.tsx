@@ -16,22 +16,34 @@ const BasicLayout: React.FC = props => {
   };
   const renderMenu = (data: Array<any>) => {
     console.log('路由', data);
+
     return data.map((item, index) => {
-      if (item.routes) {
+      // TODO: umi配置路由会生成这个component: () => {…}, _title: "umi_hooks", _title_default: "umi_hooks",暂时通过item.name去区分
+      if (item.name) {
+        if (item.routes) {
+          return (
+            <SubMenu
+              key={item.path}
+              title={
+                <span>
+                  <Icon type={item.icon} />
+                  <span>{item.name}</span>
+                </span>
+              }
+            >
+              {renderMenu(item.routes)}
+            </SubMenu>
+          );
+        }
         return (
-          <SubMenu key={item.path} title={item.name}>
-            {renderMenu(item.routes)}
-          </SubMenu>
+          <Menu.Item key={item.path} title={item.name} onClick={handelMenuClick}>
+            {/* <Link to={item.path}> */}
+            <Icon type={item.icon} />
+            <span>{item.name}</span>
+            {/* </Link> */}
+          </Menu.Item>
         );
       }
-      return (
-        <Menu.Item key={item.path} title={item.name} onClick={handelMenuClick}>
-          {/* <Link to={item.path}> */}
-          <Icon type={item.icon} />
-          <span>{item.name}</span>
-          {/* </Link> */}
-        </Menu.Item>
-      );
     });
   };
   const handelMenuClick = e => {
