@@ -6,6 +6,7 @@ import { Dispatch } from 'redux';
 import { GridContent } from '@ant-design/pro-layout';
 import { connect } from 'dva';
 import numeral from 'numeral';
+import { TagCloud } from '@/components/Charts';
 import { ChartStateType } from '@/models/chart';
 
 import styles from './index.less';
@@ -74,6 +75,16 @@ class Chart extends Component<ChartProps> {
                     />
                   </Tooltip>
                 </div>
+              </Card>
+            </Col>
+            <Col xl={6} lg={24} md={24} sm={24} xs={24}>
+              <Card
+                title="热门搜索"
+                bordered={false}
+                loading={loading}
+                bodyStyle={{ overflow: 'hidden' }}
+              >
+                <TagCloud data={tags || []} height={161} />
               </Card>
             </Col>
           </Row>
