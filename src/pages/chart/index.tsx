@@ -6,7 +6,7 @@ import { Dispatch } from 'redux';
 import { GridContent } from '@ant-design/pro-layout';
 import { connect } from 'dva';
 import numeral from 'numeral';
-import { TagCloud } from '@/components/Charts';
+import { TagCloud, WaterWave } from '@/components/Charts';
 import { ChartStateType } from '@/models/chart';
 
 import styles from './index.less';
@@ -85,6 +85,20 @@ class Chart extends Component<ChartProps> {
                 bodyStyle={{ overflow: 'hidden' }}
               >
                 <TagCloud data={tags || []} height={161} />
+              </Card>
+            </Col>
+          </Row>
+          <Row>
+            <Col xl={18} lg={24} md={24} sm={24} xs={24} style={{ marginBottom: 24 }}>
+              线形图....
+            </Col>
+            <Col xl={6} lg={24} md={24} sm={24} xs={24}>
+              <Card
+                title="资源剩余"
+                bordered={false}
+                bodyStyle={{ textAlign: 'center', fontSize: 0 }}
+              >
+                <WaterWave title="打赏资金剩余" percent={32} height={161} />
               </Card>
             </Col>
           </Row>
