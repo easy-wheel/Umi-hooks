@@ -1,11 +1,12 @@
 import { AnyAction, Reducer } from 'redux';
 
 import { EffectsCommandMap } from 'dva';
-import { TagType } from '@/types/chart';
-import { queryTags } from '@/services/chart';
+import { TagType, VisitDataType } from '@/types/chart';
+import { queryTags, fakeChartData } from '@/services/chart';
 
 export interface ChartStateType {
   tags: TagType[];
+  salesData: VisitDataType[];
 }
 
 export type Effect = (
@@ -18,9 +19,11 @@ export interface ChartModelType {
   state: ChartStateType;
   effects: {
     fetchTags: Effect;
+    fetchSalesData: Effect;
   };
   reducers: {
-    saveTags: Reducer<ChartStateType>;
+    // saveTags: Reducer<ChartStateType>;
+    save: Reducer<ChartStateType>;
   };
 }
 
@@ -28,23 +31,41 @@ const ChartModel: ChartModelType = {
   namespace: 'chart',
   state: {
     tags: [],
+    salesData: [],
   },
 
   effects: {
     *fetchTags(_, { call, put }) {
       const res = yield call(queryTags);
       yield put({
-        type: 'saveTags',
-        payload: res.list,
+        type: 'save',
+        payload: {
+          tags: res.list,
+        },
+      });
+    },
+    *fetchSalesData(_, { call, put }) {
+      const response = yield call(fakeChartData);
+      yield put({
+        type: 'save',
+        payload: {
+          salesData: response,
+        },
       });
     },
   },
 
   reducers: {
-    saveTags(state, action) {
+    // saveTags(state, action) {
+    //   return {
+    //     ...state,
+    //     tags: action.payload,
+    //   };
+    // },
+    save(state, { payload }) {
       return {
         ...state,
-        tags: action.payload,
+        ...payload,
       };
     },
   },

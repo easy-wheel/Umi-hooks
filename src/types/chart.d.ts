@@ -3,3 +3,8 @@ export interface TagType {
   value: string;
   type: string;
 }
+
+export interface VisitDataType {
+  x: string;
+  y: number;
+}

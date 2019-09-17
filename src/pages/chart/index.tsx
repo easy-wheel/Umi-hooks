@@ -1,14 +1,16 @@
 import { Card, Col, Row, Statistic, Tooltip } from 'antd';
 import { FormattedMessage, formatMessage } from 'umi-plugin-react/locale';
-import React, { Component, Fragment } from 'react';
+import React, { Component, Fragment, Suspense } from 'react';
 
 import { Dispatch } from 'redux';
 import { GridContent } from '@ant-design/pro-layout';
+import { RangePickerValue } from 'antd/es/date-picker/interface';
 import { connect } from 'dva';
 import numeral from 'numeral';
+import { getTimeDistance } from '@/utils/utils';
 import { TagCloud, WaterWave } from '@/components/Charts';
 import { ChartStateType } from '@/models/chart';
-
+const SalesCard = React.lazy(() => import('@/components/Charts/SalesCard'));
 import styles from './index.less';
 
 const { Countdown } = Statistic;
@@ -19,6 +21,10 @@ interface ChartProps {
   chart: ChartStateType;
   dispatch: Dispatch<any>;
   loading: boolean;
+}
+
+interface ChartState {
+  rangePickerValue: RangePickerValue;
 }
 
 @connect(
@@ -35,7 +41,10 @@ interface ChartProps {
     loading: loading.models.chart,
   }),
 )
-class Chart extends Component<ChartProps> {
+class Chart extends Component<ChartProps, ChartState> {
+  state: ChartState = {
+    rangePickerValue: getTimeDistance('year'),
+  };
   componentDidMount() {
     const { dispatch } = this.props;
     dispatch({
@@ -44,6 +53,7 @@ class Chart extends Component<ChartProps> {
   }
 
   render() {
+    const { rangePickerValue } = this.state;
     const { chart, loading } = this.props;
     const { tags } = chart;
 
@@ -84,13 +94,15 @@ class Chart extends Component<ChartProps> {
                 loading={loading}
                 bodyStyle={{ overflow: 'hidden' }}
               >
-                <TagCloud data={tags || []} height={161} />
+                <TagCloud data={tags || []} height={361} />
               </Card>
             </Col>
           </Row>
           <Row>
             <Col xl={18} lg={24} md={24} sm={24} xs={24} style={{ marginBottom: 24 }}>
-              线形图....
+              <Suspense fallback={null}>
+                {/* <SalesCard rangePickerValue={rangePickerValue} /> */}
+              </Suspense>
             </Col>
             <Col xl={6} lg={24} md={24} sm={24} xs={24}>
               <Card
