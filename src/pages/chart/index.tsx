@@ -50,12 +50,59 @@ class Chart extends Component<ChartProps, ChartState> {
     dispatch({
       type: 'chart/fetchTags',
     });
+    dispatch({
+      type: 'chart/fetchSalesData',
+    });
   }
+
+  componentWillUnmount() {
+    const { dispatch } = this.props;
+    dispatch({
+      type: 'chart/clear',
+    });
+  }
+
+  handleRangePickerChange = (rangePickerValue: RangePickerValue) => {
+    const { dispatch } = this.props;
+    this.setState({
+      rangePickerValue,
+    });
+
+    dispatch({
+      type: 'chart/fetchSalesData',
+    });
+  };
+
+  selectDate = (type: 'today' | 'week' | 'month' | 'year') => {
+    const { dispatch } = this.props;
+    this.setState({
+      rangePickerValue: getTimeDistance(type),
+    });
+
+    dispatch({
+      type: 'chart/fetchSalesData',
+    });
+  };
+
+  isActive = (type: 'today' | 'week' | 'month' | 'year') => {
+    const { rangePickerValue } = this.state;
+    const value = getTimeDistance(type);
+    if (!rangePickerValue[0] || !rangePickerValue[1]) {
+      return '';
+    }
+    if (
+      rangePickerValue[0].isSame(value[0], 'day') &&
+      rangePickerValue[1].isSame(value[1], 'day')
+    ) {
+      return styles.currentDate;
+    }
+    return '';
+  };
 
   render() {
     const { rangePickerValue } = this.state;
     const { chart, loading } = this.props;
-    const { tags } = chart;
+    const { tags, salesData } = chart;
 
     return (
       <GridContent>
@@ -98,10 +145,17 @@ class Chart extends Component<ChartProps, ChartState> {
               </Card>
             </Col>
           </Row>
-          <Row>
+          <Row gutter={24}>
             <Col xl={18} lg={24} md={24} sm={24} xs={24} style={{ marginBottom: 24 }}>
               <Suspense fallback={null}>
-                {/* <SalesCard rangePickerValue={rangePickerValue} /> */}
+                <SalesCard
+                  rangePickerValue={rangePickerValue}
+                  salesData={salesData}
+                  isActive={this.isActive}
+                  handleRangePickerChange={this.handleRangePickerChange}
+                  loading={loading}
+                  selectDate={this.selectDate}
+                />
               </Suspense>
             </Col>
             <Col xl={6} lg={24} md={24} sm={24} xs={24}>

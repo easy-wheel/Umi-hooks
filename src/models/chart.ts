@@ -24,6 +24,7 @@ export interface ChartModelType {
   reducers: {
     // saveTags: Reducer<ChartStateType>;
     save: Reducer<ChartStateType>;
+    clear: Reducer<ChartStateType>;
   };
 }
 
@@ -66,6 +67,13 @@ const ChartModel: ChartModelType = {
       return {
         ...state,
         ...payload,
+      };
+    },
+    clear(state, { payload }) {
+      return {
+        ...state,
+        tags: [],
+        salesData: [],
       };
     },
   },

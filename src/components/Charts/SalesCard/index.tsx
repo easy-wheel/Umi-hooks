@@ -93,6 +93,35 @@ const SalesCard = ({
             </Col>
           </Row>
         </TabPane>
+        <TabPane tab="访问量" key="visits">
+          <Row type="flex">
+            <Col xl={16} lg={12} md={12} sm={24} xs={24}>
+              <div className={styles.salesBar}>
+                <Bar height={295} title="访问量趋势" data={salesData} />
+              </div>
+            </Col>
+            <Col xl={8} lg={12} md={12} sm={24} xs={24}>
+              <div className={styles.salesRank}>
+                <h4 className={styles.rankingTitle}>门店访问量排名</h4>
+                <ul className={styles.rankingList}>
+                  {rankingListData.map((item, i) => (
+                    <li key={item.title}>
+                      <span className={`${styles.rankingItemNumber} ${i < 3 ? styles.active : ''}`}>
+                        {i + 1}
+                      </span>
+                      <span className={styles.rankingItemTitle} title={item.title}>
+                        {item.title}
+                      </span>
+                      <span className={styles.rankingItemValue}>
+                        {numeral(item.total).format('0,0')}
+                      </span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </Col>
+          </Row>
+        </TabPane>
       </Tabs>
     </div>
   </Card>
