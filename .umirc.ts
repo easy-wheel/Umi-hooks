@@ -1,11 +1,3 @@
-/*
- * @Description:
- * @version:
- * @Author: fengshuan
- * @Date: 2019-09-07 10:33:22
- * @LastEditors: fengshuan
- * @LastEditTime: 2019-09-07 16:51:51
- */
 import { IConfig } from 'umi-types';
 
 // ref: https://umijs.org/config/
