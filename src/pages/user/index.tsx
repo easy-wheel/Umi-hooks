@@ -293,19 +293,21 @@ const UserList = (props: UserListProps) => {
   );
 };
 
-export default connect(
-  ({
-    user,
-    loading,
-  }: {
-    user: UserStateType;
-    loading: {
-      models: {
-        [key: string]: boolean;
+export default Form.create<UserListProps>()(
+  connect(
+    ({
+      user,
+      loading,
+    }: {
+      user: UserStateType;
+      loading: {
+        models: {
+          [key: string]: boolean;
+        };
       };
-    };
-  }) => ({
-    user,
-    loading: loading.models.user,
-  }),
-)(Form.create<UserListProps>()(UserList));
+    }) => ({
+      user,
+      loading: loading.models.user,
+    }),
+  )(UserList),
+);
