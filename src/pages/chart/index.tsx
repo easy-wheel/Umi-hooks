@@ -40,6 +40,7 @@ const Chart = (props: ChartProps) => {
     });
     return () => {
       // componentWillUnmount
+      console.log('componentWillUnmount');
       dispatch({
         type: 'chart/clear',
       });
