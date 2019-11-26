@@ -1,9 +1,9 @@
 {
   "private": true,
   "scripts": {
-    "start": "umi dev",
-    "build": "umi build",
-    "test": "umi test",
+    "start": "cross-env UMI_ENV=dev umi dev",
+    "build": "cross-env UMI_ENV=prod umi build",
+    "test": "cross-env UMI_ENV=test umi test",
     "lint:es": "eslint --ext .js src mock tests",
     "lint:ts": "tslint \"src/**/*.ts\" \"src/**/*.tsx\"",
     "precommit": "lint-staged"
@@ -37,6 +37,7 @@
     "@types/react-dom": "^16.0.11",
     "@types/react-test-renderer": "^16.0.3",
     "babel-eslint": "^9.0.0",
+    "cross-env": "^6.0.3",
     "eslint": "^5.4.0",
     "eslint-config-umi": "^1.4.0",
     "eslint-plugin-flowtype": "^2.50.0",
