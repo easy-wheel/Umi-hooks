@@ -12,6 +12,8 @@
  */
 import { extend } from 'umi-request';
 import { notification } from 'antd';
+import Cookie from 'js-cookie';
+const baseUrl = process.env.BASE_URL;
 
 const codeMessage = {
   200: '服务器成功返回请求的数据。',
@@ -61,4 +63,28 @@ const request = extend({
   credentials: 'include', // 默认请求是否带上cookie
 });
 
+/**
+ * request拦截器，改变url或options
+ */
+request.interceptors.request.use((url, options) => {
+  const headers = {
+    'Content-Type': 'application/json;charset=utf8',
+    // token: Cookie.get('user_token'),
+    token: '0ff92795-8f18-46f3-9356-cbb417016740',
+  };
+  return {
+    url: options.mock ? url : `${baseUrl}${url}`, // 区分mock与真实接口环境
+    options: {
+      ...options,
+      headers,
+    },
+  };
+});
+
+/**
+ * response拦截器，处理response
+ */
+request.interceptors.response.use(async (response: Response) => {
+  return response;
+});
 export default request;

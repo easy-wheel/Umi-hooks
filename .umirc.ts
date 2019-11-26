@@ -1,7 +1,13 @@
 import { IConfig } from 'umi-types';
 import { resolve } from 'path';
+
+const outputDir = process.env.UMI_ENV == 'test' ? 'dist-test' : 'dist';
+console.log('环境变量', process.env.UMI_ENV);
 // ref: https://umijs.org/config/
 const config: IConfig = {
+  // 应用程序将部署的base URL
+  // 编译打包后的输出目录
+  outputPath: outputDir,
   treeShaking: true,
   plugins: [
     // ref: https://umijs.org/plugin/umi-plugin-react.html
@@ -88,11 +94,11 @@ const config: IConfig = {
     },
   ],
   proxy: {
-    // '/api/v1/weather': {
-    //   target: 'https://api.seniverse.com/',
-    //   changeOrigin: true,
-    //   pathRewrite: { '^/api/v1/weather': '/v3/weather' },
-    // },
+    '/api': {
+      target: '', // 转发地址
+      changeOrigin: true,
+      // pathRewrite: { '^/api/v1/weather': '/v3/weather' },
+    },
   },
   define: {
     'process.env.BASE_URL': '', // 开发环境请求api地址
