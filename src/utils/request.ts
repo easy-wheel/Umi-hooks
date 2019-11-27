@@ -69,8 +69,7 @@ const request = extend({
 request.interceptors.request.use((url, options) => {
   const headers = {
     'Content-Type': 'application/json;charset=utf8',
-    // token: Cookie.get('user_token'),
-    token: '0ff92795-8f18-46f3-9356-cbb417016740',
+    token: Cookie.get('user_token'),
   };
   return {
     url: options.mock ? url : `${baseUrl}${url}`, // 区分mock与真实接口环境

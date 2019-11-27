@@ -19,7 +19,7 @@ const config: IConfig = {
         dva: true,
         dynamicImport: { webpackChunkName: true },
         title: 'umi_hooks',
-        chunks: ['vendors', 'antdesigns', 'umi'],
+        chunks: ['vendors', 'antdesigns', 'visualization', 'umi'],
         dll: true,
         routes: {
           exclude: [
@@ -128,7 +128,7 @@ const config: IConfig = {
           priority: -11,
         },
         visualization: {
-          name: 'visualization ',
+          name: 'visualization',
           chunks: 'all',
           test: /[\\/]node_modules[\\/](bizcharts|bizcharts-plugin-slider|@antv_data-set)[\\/]/,
           priority: -12,
