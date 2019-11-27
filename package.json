@@ -56,7 +56,11 @@
     "tslint-react": "^3.6.0",
     "umi": "^2.9.0",
     "umi-plugin-react": "^1.8.0",
-    "umi-types": "^0.3.0"
+    "umi-types": "^0.3.0",
+    "webpack": "^4.41.2",
+    "webpack-bundle-analyzer": "^3.6.0",
+    "webpack-chain": "^6.0.0",
+    "webpack-merge": "^4.2.2"
   },
   "lint-staged": {
     "*.{ts,tsx}": [
