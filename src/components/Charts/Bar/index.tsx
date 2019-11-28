@@ -1,4 +1,10 @@
-import { Axis, Chart, Geom, Tooltip } from 'bizcharts';
+// import { Axis, Chart, Geom, Tooltip } from 'bizcharts';
+import Chart from 'bizcharts/lib/components/Chart';
+import Axis from 'bizcharts/lib/components/Axis';
+import Tooltip from 'bizcharts/lib/components/Tooltip';
+
+import Interval from 'bizcharts/lib/components/TypedGeom/Interval';
+
 import React, { Component } from 'react';
 
 import Debounce from 'lodash.debounce';
@@ -122,7 +128,7 @@ class Bar extends Component<
             />
             <Axis name="y" min={0} />
             <Tooltip showTitle={false} crosshairs={false} />
-            <Geom type="interval" position="x*y" color={color} tooltip={tooltip} />
+            <Interval position="x*y" color={color} tooltip={tooltip} />
           </Chart>
         </div>
       </div>

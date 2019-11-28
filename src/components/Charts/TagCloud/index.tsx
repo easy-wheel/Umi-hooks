@@ -1,4 +1,10 @@
-import { Chart, Coord, Geom, Shape, Tooltip } from 'bizcharts';
+// import { Chart, Coord, Geom, Shape, Tooltip } from 'bizcharts';
+import Chart from 'bizcharts/lib/components/Chart';
+import Coord from 'bizcharts/lib/components/Coord';
+import * as bizUtil from 'bizcharts/lib/core';
+import Tooltip from 'bizcharts/lib/components/Tooltip';
+
+import Point from 'bizcharts/lib/components/TypedGeom/Point';
 import React, { Component } from 'react';
 
 import DataSet from '@antv/data-set';
@@ -6,7 +12,7 @@ import Debounce from 'lodash.debounce';
 import classNames from 'classnames';
 import autoHeight from '@/utils/autoHeight';
 import styles from './index.less';
-
+const { Shape } = bizUtil;
 /* eslint no-underscore-dangle: 0 */
 /* eslint no-param-reassign: 0 */
 
@@ -189,8 +195,7 @@ class TagCloud extends Component<TagCloudProps, TagCloudState> {
           >
             <Tooltip showTitle={false} />
             <Coord reflect="y" />
-            <Geom
-              type="point"
+            <Point
               position="x*y"
               color="text"
               shape="cloud"
